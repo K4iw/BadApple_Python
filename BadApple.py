@@ -35,7 +35,7 @@ def play_video():
         for y in range(hauteur):
             affichage+="\n"
             for x in range(largeur):
-                if data[y,x]==0:
+                if data[y,x]<128:
                     affichage +="0"
                 else:
                     affichage+="1"
@@ -45,7 +45,7 @@ def play_video():
         sys.stdout.write(affichage)
         #Reset the print
         affichage =""
-        time.sleep(0.033)
+        time.sleep(0.030)
 #I use tread because it  can play 2 part of code separately(i learn it today llamo)
 thread1 = Thread(target=play_sound)
 thread2 = Thread(target=play_video)
