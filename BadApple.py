@@ -1,17 +1,13 @@
-from colorsys import rgb_to_hls
 import numpy as np
 from PIL import Image
 import time
 import sys
-from PIL.ImageOps import grayscale
-from numpy._core.fromnumeric import resize
 from playsound3 import playsound
 from threading import Thread
 #Value for resizing the img to fit in the terminal
-hauteur = 63
-largeur = 130
+height= 63
+weight= 130
 
-#Path and actual frame,priting into the console
 #Use to play soung
 def play_sound():
     playsound("BadApple.mp3")
@@ -19,35 +15,36 @@ def play_sound():
 def data_image(path:str):
     """Get image array pixeldata"""
     image = Image.open(path)
-    image = grayscale(image)
+    image = image.convert("L")
     #Resize the image
-    image = image.resize((largeur,hauteur))
-    #Convert the image into a readable array
+    image = image.resize((weight,height))
     return np.array(image)
 def play_video():
     frame = 1
-    affichage = ""
+    printing = ""
     while frame < 6572:
         #Path to find the image
         path = f"frames/output_{frame:04}.jpg"
         #Call function data_image to get an array
         data =data_image(path)
-        for y in range(hauteur):
-            affichage+="\n"
-            for x in range(largeur):
+        for y in range(height):
+            printing+="\n"
+            for x in range(weight):
                 if data[y,x]<128:
-                    affichage +="0"
+                    printing +="/"
                 else:
-                    affichage+="1"
+                    printing+="."
         #Next frame
         frame +=1
         #Print into the console (i have look online for alternative to print )
-        sys.stdout.write(affichage)
+        time.sleep(0.03)
+        sys.stdout.write(printing)
         #Reset the print
-        affichage =""
-        time.sleep(0.030)
+        printing =""
+
 #I use tread because it  can play 2 part of code separately(i learn it today llamo)
 thread1 = Thread(target=play_sound)
 thread2 = Thread(target=play_video)
 thread1.start()
-thread2.start()
+if thread1.run :
+    thread2.start()
